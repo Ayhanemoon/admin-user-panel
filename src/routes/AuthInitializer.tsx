@@ -3,11 +3,13 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setCredentials, logout } from 'features/auth/authSlice';
 import { isTokenExpired } from 'utils/authUtils';
+import { useRefreshAuthTokenMutation } from 'features/api/authApi';
 
 const AuthInitializer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isInitialized, setIsInitialized] = useState(false); // Track initialization state
+  const [refreshAuthToken] = useRefreshAuthTokenMutation();
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -20,16 +22,10 @@ const AuthInitializer: React.FC<{ children: React.ReactNode }> = ({ children }) 
           if (refreshToken) {
             try {
               // Attempt to refresh the token
-              const response = await fetch('/auth/refresh', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ refreshToken }),
-              });
+                const response = await refreshAuthToken(refreshToken).unwrap();
 
               if (response.ok) {
-                const data = await response.json();
+                const data = response;
                 dispatch(
                   setCredentials({
                     accessToken: data.accessToken,

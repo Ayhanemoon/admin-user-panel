@@ -10,6 +10,7 @@ import DashboardLayout from '@/layouts/DashboardLayout/DashboardLayout';
 import { RootState, useTypedSelector } from 'store/store';
 import NotFoundPage from 'pages/NotFoundPage/NotFoundPage';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import FormBuilder from '@/components/form/formBuilder/FormBuilder';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -81,12 +82,14 @@ const AppRoutes: React.FC = () => {
                                 }
                             >
                                 <Route index element={<DashboardPage />} />
+                                <Route path="/users/*" element={<FormBuilder entity="users" />} />
                             </Route>
                             <Route
                                 path="/dashboard"
                                 element={<DashboardLayout /> }
                             >
                                 <Route index element={<DashboardPage />} />
+                                <Route path="users/*" element={<FormBuilder entity="users" />} />
                             </Route>
 
                             {/* Error Page */}

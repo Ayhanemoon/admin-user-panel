@@ -31,12 +31,14 @@ import { persistStore, persistReducer } from 'redux-persist';
 import { authMiddleware } from 'features/auth/authMiddleware';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { entityApi } from 'features/api/entityApi';
 
 // Combine reducers
 const rootReducer = combineReducers({
   auth: authReducer, // Persist this slice
   users: userReducer,
-  [api.reducerPath]: api.reducer, // Do not persist API slice
+  [api.reducerPath]: api.reducer,
+  [entityApi.reducerPath]: entityApi.reducer,
 });
 
 // Configure redux-persist
@@ -63,7 +65,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false, // Required for redux-persist
-    }).concat(api.middleware, authMiddleware),
+    }).concat(api.middleware, entityApi.middleware, authMiddleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
 

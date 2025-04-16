@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
 import MainHeader from 'components/template/MainHeader/MainHeader';
 import MainSidebar from 'components/template/MainSidebar/MainSidebar';
 import MainOverlay from 'components/template/MainOverlay/MainOverlay';
@@ -7,17 +8,35 @@ import MainOverlay from 'components/template/MainOverlay/MainOverlay';
 import './DashboardLayout.scss';
 
 const DashboardLayout = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  }
+
   return (
-    <div className="layout">
-      <MainHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
-      <MainSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      {sidebarOpen && <MainOverlay onClick={() => setSidebarOpen(false)} />}
-      <main className="layout__main">
-        <Outlet />
-      </main>
-    </div>
+    <Box dir="rtl" className="layout">
+      <MainHeader mobileMode={isMobile} onMenuClick={toggleSidebar} />
+
+      <Grid container className="layout__container" >
+        {/* Main content first in markup due to RTL */}
+        <Grid size={{ xs: 0, md: 1.5 }}>
+          <MainSidebar
+            open={sidebarOpen || !isMobile}
+            mobileMode={isMobile}
+            onClose={() => setSidebarOpen(false)}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, md: 10.5 }} className="layout__main">
+          <Outlet />
+        </Grid>
+
+      </Grid>
+
+      {isMobile && sidebarOpen && <MainOverlay onClick={() => setSidebarOpen(false)} />}
+    </Box>
   );
 };
 

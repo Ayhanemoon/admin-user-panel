@@ -1,0 +1,17 @@
+.entity-index {
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background-color: var(--mui-palette-primary-main);
+    color: white;
+    border-radius: 5px;
+  }
+}
+
+.MuiTablePagination-displayedRows {
+  direction: ltr;
+  display: none;
+}
