@@ -11,8 +11,8 @@ const AuthLayout: React.FC = () => {
             </main>
             <footer>
                 <div className="footer-content">
-                    <p>تمامی حقوق برای هویتا محفوظ است &copy; 2025</p>
-                    <p>طراحی و توسعه توسط تیم هویتا</p>
+                    <p>تمامی حقوق برای ما محفوظ است &copy; 2025</p>
+                    <p>طراحی و توسعه توسط تیم ما</p>
                 </div>
             </footer>
         </div>
