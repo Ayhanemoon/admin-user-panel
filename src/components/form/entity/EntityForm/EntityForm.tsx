@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Button, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
+import { Button, Grid, Typography } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { validationSchemas } from 'validations/entityValidation';
 import { entityFormFields, FieldType, getEntityLabel } from 'utils/EntityForm';
@@ -89,32 +89,36 @@ const EntityForm: React.FC<{ entity: string }> = ({ entity }) => {
     <div className="entity-form">
       <Typography variant="h5">{id ? `تغییر ${getEntityLabel(entity, 'singular')}` : `ساخت ${getEntityLabel(entity, 'singular')}`}</Typography>
       <form className='entity-form__form' onSubmit={handleSubmit(onSubmit)}>
-      {Object.keys(entityFormFields[entity] || {}).map    ((key) => {
-        const field = entityFormFields[entity][key]; // Use entityFormFields for field configuration
-        if (!field) return null; // Skip undefined fields
-        const FieldComponent = entityFields[field.type as keyof typeof entityFields];
-        if (!FieldComponent) return null;
-        return (
-          <Controller
-            key={key}
-            name={key}
-            control={control}
-            defaultValue={field.defaultValue !== undefined ? field.defaultValue : ''}
-            render={({ field: { onChange, value } }) => (
-              <FieldComponent
-                name={key}
-                label={field.label}
-                value={value}
-                onChange={(name, value) => handleInputChange(name, value)}
-                required={field.required}
-                checked={field.type === 'switch' ? value : undefined} // For switch or checkbox fields
-                options={field.options || []} // For select or radio fields
-                error={typeof errors[key]?.message === 'string' ? errors[key]?.message : ''} // Pass validation error
-              />
-            )}
-          />
-        );
-      })}
+      <Grid container spacing={3} >
+        {Object.keys(entityFormFields[entity] || {}).map    ((key) => {
+          const field = entityFormFields[entity][key]; // Use entityFormFields for field configuration
+          if (!field) return null; // Skip undefined fields
+          const FieldComponent = entityFields[field.type as keyof typeof entityFields];
+          if (!FieldComponent) return null;
+          return (
+            <Controller
+              key={key}
+              name={key}
+              control={control}
+              defaultValue={field.defaultValue !== undefined ? field.defaultValue : ''}
+              render={({ field: { onChange, value } }) => (
+                <Grid size={field.grid}>
+                  <FieldComponent
+                    name={key}
+                    label={field.label}
+                    value={value}
+                    onChange={(name, value) => handleInputChange(name, value)}
+                    required={field.required}
+                    checked={field.type === 'switch' ? value : undefined} // For switch or checkbox fields
+                    options={field.options || []} // For select or radio fields
+                    error={typeof errors[key]?.message === 'string' ? errors[key]?.message : ''} // Pass validation error
+                  />
+                </Grid>
+              )}
+            />
+          );
+        })}
+      </Grid>
         <div className="entity-form__buttons">
           <Button loading={isLoading} variant="contained" type="submit">
             ذخیره
