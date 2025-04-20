@@ -47,9 +47,6 @@ const DateInputField: React.FC<DateInputFieldProps> = ({
     value && isValid(parseISO(value)) ? parseISO(value) : null;
 
   const handleChange = (date: PickerValue | null) => {
-    console.log('data in datePicker submit ', date);
-    console.log('date?.toISOString in datePicker submit ', date?.toISOString());
-    
     onChange(name, date?.toISOString() || null);
   };
 
