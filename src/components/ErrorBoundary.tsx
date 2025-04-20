@@ -20,8 +20,8 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
         if (this.state.hasError) {
             return (
                 <div style={{ textAlign: 'center', marginTop: '50px' }}>
-                    <h1>Something went wrong.</h1>
-                    <p>Please try refreshing the page or contact support if the issue persists.</p>
+                    <h1>یه جای کار میلنگه</h1>
+                    <p>لطفا مجددا صفحه را بارگذاری کنید و در صورت بروز دوباره این مشکل با آیهان تماس بگیرید</p>
                 </div>
             );
         }
