@@ -25,13 +25,13 @@
 import api from 'features/api/api';
 import storage from 'redux-persist/lib/storage';
 import authReducer from 'features/auth/authSlice';
+import { entityApi } from 'features/api/entityApi';
 import userReducer from 'features/users/userSlice';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { persistStore, persistReducer } from 'redux-persist';
 import { authMiddleware } from 'features/auth/authMiddleware';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { entityApi } from 'features/api/entityApi';
 
 // Combine reducers
 const rootReducer = combineReducers({

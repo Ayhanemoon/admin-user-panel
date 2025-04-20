@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import EntityIndex from 'components/form/entity/EntityIndex/EntityIndex';
 import EntityForm from 'components/form/entity/EntityForm/EntityForm';
+import EntityIndex from 'components/form/entity/EntityIndex/EntityIndex';
 import EntityDetails from 'components/form/entity/EntityDetails/EntityDetails';
 
 const EntityRoutes: React.FC<{ entity: string }> = ({ entity }) => {

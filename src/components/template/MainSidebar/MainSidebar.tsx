@@ -10,7 +10,7 @@ interface SidebarProps {
 const MainSidebar = ({ open, mobileMode, onClose }: SidebarProps) => {
   const navItems = [
     { to: '/dashboard', label: 'داشبورد' },
-    { to: '/dashboard/users', label: 'کاربران' },
+    { to: '/dashboard/users', label: 'مدیریت کاربران' },
   ]
   const location = useLocation();
   const isActive = (path: string) => {

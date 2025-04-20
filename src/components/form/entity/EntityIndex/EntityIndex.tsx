@@ -1,6 +1,13 @@
+import theme from 'theme/theme';
 import React, { useState } from 'react';
+import { format, newDate } from "date-fns-jalali";
 import { Link, useResolvedPath } from 'react-router-dom';
+import { convertToPersianDigits } from '@/utils/numbers';
+import { entityFormFields, getEntityLabel } from 'utils/EntityForm';
+import { AddCircle, Delete, Edit, Visibility } from '@mui/icons-material';
 import { useGetEntitiesQuery, useDeleteEntityMutation } from 'features/api/entityApi';
+// import TablePaginationActions from '@/components/theme/TablePaginationActions';
+
 import {
   Table,
   TableBody,
@@ -15,14 +22,14 @@ import {
   ButtonGroup,
   IconButton,
   Tooltip,
+  useMediaQuery,
 } from '@mui/material';
-import { entityFormFields, getEntityLabel } from 'utils/EntityForm';
 
 import './EntityIndex.scss';
-import TablePaginationActions from '@/components/theme/TablePaginationActions';
-import { Delete, Edit, Visibility } from '@mui/icons-material';
 
 const EntityIndex: React.FC<{ entity: string }> = ({ entity }) => {
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const { data, isLoading, isError } = useGetEntitiesQuery({
@@ -45,8 +52,6 @@ const EntityIndex: React.FC<{ entity: string }> = ({ entity }) => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
-    // Logic to fetch new data based on page change
-
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,19 +64,25 @@ const EntityIndex: React.FC<{ entity: string }> = ({ entity }) => {
 
   const columns = Object.keys(entityFormFields[entity] || {});
 
-  function defaultLabelDisplayedRows({ from, to, count }: { from: number; to: number; count: number }) {
-    return `${from}–${to} of ${count !== -1 ? count : `more than ${to}`}`;
-  }
-
   return (
     <div className="entity-index">
       <div className="entity-index__header">
         <Typography variant="h5" gutterBottom>
           لیست {getEntityLabel(entity, 'plural')}
         </Typography>
-        <Button variant="contained" color="info" component={Link} to={`${pathName}/create`}>
-          ساخت {getEntityLabel(entity, 'singular')} جدید
-        </Button>
+          { isMobile ? (
+            <IconButton sx={{color: 'white'}} aria-label="ساخت" color="info" component={Link} to={`${pathName}/create`}>
+              <Tooltip title={`ساخت ${getEntityLabel(entity, 'singular')} جدید`} arrow placement="top">
+                <AddCircle />
+              </Tooltip>
+            </IconButton>
+          ): (
+            <Button variant="contained" color="info" component={Link} to={`${pathName}/create`}>
+              ساخت {getEntityLabel(entity, 'singular')} جدید
+            </Button>
+            )
+          }
+        
       </div>
       <TableContainer component={Paper}>
         <Table>
@@ -103,21 +114,29 @@ const EntityIndex: React.FC<{ entity: string }> = ({ entity }) => {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  <Tooltip title={String(item[key] ?? '')} arrow placement="top">
-                    <span>{item[key]}</span>
+                  <Tooltip title={String((entityFormFields[entity][key].type === 'date' ? convertToPersianDigits(format(item[key], "yyyy/MM/dd")) : item[key])?? '')} arrow placement="top">
+                  { entityFormFields[entity][key].type === 'date' ?
+                   (<span>{convertToPersianDigits(format(item[key], "yyyy/MM/dd"))}</span>) : 
+                   (<span>{item[key]}</span>)}
                   </Tooltip>
                 </TableCell>
                 ))}
                 <TableCell align="center">
                   <ButtonGroup size="small" aria-label="Small button group">
                     <IconButton color='primary' aria-label="مشاهده" component={Link} to={`${pathName}/${item.id}`}>
-                      <Visibility />
+                      <Tooltip title={'مشاهده'} arrow placement="top">
+                        <Visibility />
+                      </Tooltip>
                     </IconButton>
                     <IconButton color='primary' aria-label="ویرایش" component={Link} to={`${pathName}/${item.id}/edit`}>
-                      <Edit />
+                      <Tooltip title={'ویرایش'} arrow placement="top">
+                        <Edit />
+                      </Tooltip>
                     </IconButton>
                     <IconButton color='error' aria-label="حذف" onClick={() => handleDelete(item.id)}>
-                      <Delete />
+                      <Tooltip title={'حذف'} arrow placement="top">
+                        <Delete />
+                      </Tooltip>
                     </IconButton>
                   </ButtonGroup>
                 </TableCell>

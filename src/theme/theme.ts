@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import { faIR } from '@mui/x-date-pickers/locales';
 
 const theme = createTheme({
   direction: 'rtl', // Set direction to RTL
@@ -50,6 +51,6 @@ const theme = createTheme({
       900: '#212121',
     }
   },
-});
+},faIR);
 
 export default theme;

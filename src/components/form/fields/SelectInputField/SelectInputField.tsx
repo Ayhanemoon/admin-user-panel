@@ -27,7 +27,7 @@ const SelectInputField: React.FC<SelectInputFieldProps> = ({
 }) => {
   return (
     <div className={`form__group ${className}`}>
-      <FormControl fullWidth required={required}>
+      <FormControl size='small' fullWidth required={required}>
         <InputLabel>{label}</InputLabel>
         <Select
           value={value}

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setCredentials, logout } from 'features/auth/authSlice';
 import { isTokenExpired } from 'utils/authUtils';
+import React, { useEffect, useState } from 'react';
+import { setCredentials, logout } from 'features/auth/authSlice';
 import { useRefreshAuthTokenMutation } from 'features/api/authApi';
 
 const AuthInitializer: React.FC<{ children: React.ReactNode }> = ({ children }) => {

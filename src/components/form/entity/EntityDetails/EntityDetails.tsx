@@ -1,9 +1,9 @@
 import React from 'react';
+import { Delete, Edit, Undo } from '@mui/icons-material';
+import { entityFormFields, getEntityLabel } from 'utils/EntityForm';
+import { Typography, Card, CardContent, Grid, IconButton } from '@mui/material';
 import { useParams, Link, useResolvedPath, useNavigate } from 'react-router-dom';
 import { useDeleteEntityMutation, useGetEntityQuery } from 'features/api/entityApi';
-import { Typography, Card, CardContent, Grid, IconButton } from '@mui/material';
-import { entityFormFields, getEntityLabel } from 'utils/EntityForm';
-import { Delete, Edit, Undo } from '@mui/icons-material';
 
 import './EntityDetails.scss';
 
