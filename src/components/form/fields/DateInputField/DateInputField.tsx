@@ -1,11 +1,12 @@
 import React from 'react';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
-import jalali from 'jalali-dayjs';
-
-dayjs.extend(jalali);
-
+import { AdapterFormats, DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFnsJalali } from "@mui/x-date-pickers/AdapterDateFnsJalali";
+import { parseISO, isValid } from "date-fns";
+import { PickerValue } from '@mui/x-date-pickers/internals';
+import { faIR as fa } from 'date-fns-jalali/locale';
+import { faIR } from '@mui/x-date-pickers/locales';
+import { convertToPersianDigits } from '@/utils/numbers';
+import { format } from 'date-fns-jalali';
 interface DateInputFieldProps {
   label: string;
   name: string;
@@ -14,6 +15,24 @@ interface DateInputFieldProps {
   required?: boolean;
   className?: string;
 }
+
+import { Locale } from 'date-fns-jalali';
+
+export class CustomAdapterDateFnsJalali extends AdapterDateFnsJalali {
+  constructor (...args: any[]) {
+    super(...args)
+    
+    const originalFormat = this.format
+    this.format =(date: Date, formatKey: keyof AdapterFormats): string => {
+      const formatted = originalFormat(date, formatKey);
+      return convertToPersianDigits(formatted);
+    }
+  }
+  
+
+  // Optional: customize weekday names
+}
+
 
 const DateInputField: React.FC<DateInputFieldProps> = ({
   label,
@@ -24,16 +43,19 @@ const DateInputField: React.FC<DateInputFieldProps> = ({
   className = '',
 }) => {
   // Safe parse
-  const safeValue: Dayjs | null =
-    value && dayjs(value).isValid() ? dayjs(value) : null;
+  const safeValue: Date | null =
+    value && isValid(parseISO(value)) ? parseISO(value) : null;
 
-  const handleChange = (date: Dayjs | null) => {
+  const handleChange = (date: PickerValue | null) => {
+    console.log('data in datePicker submit ', date);
+    console.log('date?.toISOString in datePicker submit ', date?.toISOString());
+    
     onChange(name, date?.toISOString() || null);
   };
 
   return (
     <div className={`form__group ${className}`}>
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fa">
+      <LocalizationProvider dateAdapter={CustomAdapterDateFnsJalali} adapterLocale={fa} localeText={faIR.components.MuiLocalizationProvider.defaultProps.localeText}>
         <DatePicker
           label={label}
           value={safeValue}
