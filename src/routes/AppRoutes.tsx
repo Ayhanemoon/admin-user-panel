@@ -4,13 +4,13 @@ import AuthPage from 'pages/AuthPage/AuthPage';
 import DashboardPage from 'pages/DashboardPage';
 import ErrorPage from 'pages/ErrorPage/ErrorPage';
 import AuthInitializer from 'routes/AuthInitializer';
-import ErrorBoundary from 'components/ErrorBoundary';
 import AuthLayout from '@/layouts/AuthLayout/AuthLayout';
-import DashboardLayout from '@/layouts/DashboardLayout/DashboardLayout';
 import { RootState, useTypedSelector } from 'store/store';
+import ErrorBoundary from '@/components/hoc/ErrorBoundary';
 import NotFoundPage from 'pages/NotFoundPage/NotFoundPage';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import FormBuilder from '@/components/form/formBuilder/FormBuilder';
+import DashboardLayout from '@/layouts/DashboardLayout/DashboardLayout';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.css';
 
