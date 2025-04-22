@@ -26,7 +26,7 @@ interface FieldComponentProps {
   onChange: (name: string, value: any) => void;
   required: boolean;
   checked: boolean; // Optional, but required for switch or checkbox fields
-  options: { label: string; value: string }[]; // For select or radio fields
+  options: { label: string; value: any }[]; // For select or radio fields
   error: string; // For validation error messages
 }
 

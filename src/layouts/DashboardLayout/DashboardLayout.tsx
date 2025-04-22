@@ -22,14 +22,14 @@ const DashboardLayout = () => {
 
       <Grid container className="layout__container" >
         {/* Main content first in markup due to RTL */}
-        <Grid size={{ xs: 0, md: 1.5 }}>
+        <Grid size={{ xs: 0, md: 2.25 }}>
           <MainSidebar
             open={sidebarOpen || !isMobile}
             mobileMode={isMobile}
             onClose={() => setSidebarOpen(false)}
           />
         </Grid>
-        <Grid size={{ xs: 12, md: 10.5 }} className="layout__main">
+        <Grid size={{ xs: 12, md: 9.75 }} className="layout__main">
           <Outlet />
         </Grid>
 

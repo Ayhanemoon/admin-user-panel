@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDialogs } from '@toolpad/core';
 import { Delete, Edit, Undo } from '@mui/icons-material';
 import { entityFormFields, getEntityLabel } from 'utils/EntityForm';
 import { Typography, Card, CardContent, Grid, IconButton } from '@mui/material';
@@ -14,9 +15,16 @@ const EntityDetails: React.FC<{ entity: string }> = ({ entity }) => {
   const resolvedPath = useResolvedPath('');
   const basePath = resolvedPath.pathname.split('/').slice(0, -1).join('/');
   const [deleteEntity] = useDeleteEntityMutation();
+  const dialogs = useDialogs()
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('آیا مطمئن هستید که می‌خواهید این مورد را حذف کنید؟')) {
+    const confirm = await dialogs.confirm('آیا مطمئن هستید که می‌خواهید این مورد را حذف کنید؟', {
+      title: `حذف ${getEntityLabel(entity, 'singular')}`,
+      okText: 'حذف',
+      cancelText: 'لغو',
+      severity: 'error'
+    });
+    if (confirm) {
       await deleteEntity({ entity, id });
       navigate(basePath);
     }

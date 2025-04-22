@@ -6,7 +6,7 @@ import { PickerValue } from '@mui/x-date-pickers/internals';
 import { faIR as fa } from 'date-fns-jalali/locale';
 import { faIR } from '@mui/x-date-pickers/locales';
 import { convertToPersianDigits } from '@/utils/numbers';
-import { format } from 'date-fns-jalali';
+import { format, newDate } from 'date-fns-jalali';
 interface DateInputFieldProps {
   label: string;
   name: string;
@@ -14,6 +14,8 @@ interface DateInputFieldProps {
   onChange: (name: string, value: string | null) => void;
   required?: boolean;
   className?: string;
+  options: { label: string; value: any }[];
+  error: string; // For validation error messages
 }
 
 import { Locale } from 'date-fns-jalali';
@@ -41,6 +43,7 @@ const DateInputField: React.FC<DateInputFieldProps> = ({
   onChange,
   required = false,
   className = '',
+  options
 }) => {
   // Safe parse
   const safeValue: Date | null =
@@ -57,6 +60,7 @@ const DateInputField: React.FC<DateInputFieldProps> = ({
           label={label}
           value={safeValue}
           onChange={handleChange}
+          views={['year', 'month', 'day']}
           slotProps={{
             textField: {
               required,
